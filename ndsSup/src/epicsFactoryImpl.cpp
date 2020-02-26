@@ -10,8 +10,6 @@
 #include <iostream>
 #include <fstream>
 #include <link.h>
-#include <elf.h>
-#include <dlfcn.h>
 #include <set>
 #include <string>
 #include <sstream>
@@ -122,6 +120,8 @@ void EpicsFactoryImpl::loadNdsNamingRules(const iocshArgBuf * arguments)
         }
 
         std::ifstream iniFile(arguments[0].sval);
+        if ((iniFile.rdstate() & std::istream::failbit) != 0)
+            throw std::runtime_error("Invalid INI file");
         m_pFactory->loadNamingRules(iniFile);
     }
     catch(const std::runtime_error& e)

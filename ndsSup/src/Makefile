@@ -5,12 +5,14 @@ include $(TOP)/configure/CONFIG
 #  ADD MACRO DEFINITIONS AFTER THIS LINE
 #=============================
 
-USR_CPPFLAGS=-std=c++0x -Wall -Wextra -pedantic -fPIC -pthread
+USR_CPPFLAGS_LINUX=-std=c++0x -Wall -Wextra -pedantic -fPIC -pthread
 
 #==================================================
 # build a support library
 
 LIBRARY_IOC += nds3epics
+
+USR_INCLUDES_WIN32 += -I../../../nds3/pthreads4w
 
 # install nds3.dbd into <top>/dbd
 DBD += nds3epics.dbd
@@ -25,7 +27,7 @@ nds3epics_SRCS += ndsRegister.cpp
 #INC += nds3/impl/epicsInterfaceImpl.h
 #INC += nds3/impl/epicsThread.h
 
-nds3epics_LIBS += nds3
+nds3epics_LIBS += nds3 asyn
 nds3_DIR = $(NDS3)
 
 nds3epics_LIBS += $(EPICS_BASE_IOC_LIBS)

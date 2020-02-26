@@ -301,7 +301,13 @@ void EpicsInterfaceImpl::registrationTerminated()
 {
     char tmpBuffer[L_tmpnam];
 
-    std::string tmpFileName(tmpnam_r(tmpBuffer));
+    std::string tmpFileName(tmpnam(tmpBuffer));
+
+#ifdef _WIN32
+    size_t Pos;
+    while ((Pos = tmpFileName.find('\\')) != std::string::npos)
+        tmpFileName.replace(Pos, 1, 1, '/');
+#endif // _WIN32
 
     std::string fileName(tmpFileName);
     std::ofstream outputStream(fileName.c_str());
